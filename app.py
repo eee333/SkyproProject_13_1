@@ -1,7 +1,7 @@
 # Small library. Home work 13.1 Создание API
 
 import json
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 
 app = Flask(__name__)
 
@@ -10,19 +10,24 @@ app = Flask(__name__)
 def index(book_id):
     with open('books.json', encoding="utf-8") as f:
         books = json.load(f)
+        body = json.dumps({"error": "book not found"})
+        status = '400'
         for book in books:
             if book_id == book['id']:
-                # return render_template("one_book.html", book=book)
-                return json.dumps(book, ensure_ascii=False)
-        # return render_template("one_book.html", book={})
-        return {}
+                body = json.dumps(book, ensure_ascii=False)
+                status = '200'
+
+        response = Response(body, content_type='application/json', status=status)
+        return response
 
 
 @app.route('/add', methods=['POST'])
 def add_book():
     new_book = request.json
-    # return new_book
-    return "", 201
+    # new_book['id'] = 2
+    # new_book['isbn'] = "978-5-389-07435-5"
+
+    return json.dumps(new_book), 201
 
 
 @app.route('/add/')
