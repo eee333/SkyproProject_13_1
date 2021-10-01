@@ -13,3 +13,7 @@ def index(book_id):
         for book in books:
             if book_id == book.id:
                 return render_template("one_book.html", book=book)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
