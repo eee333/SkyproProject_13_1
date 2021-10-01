@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Книга</title>
+</head>
+<body>
+<header class="container header">
+    <div class="header__wrapper">
+        <a href="#" class="header__logo-link">Библиотека</a>
+        <nav class="header__nav">
+            <ul class="header__menu">
+                <li class="header__menu-item"><a href="/" class="header__menu-link">Главная</a></li>
+                <li class="header__menu-item"><a href="/search" class="header__menu-link">Добавить</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="container">
+    <section class="item-card">
+        <h1 class="item-card__title title">{{ book.name }}</h1>
+        <div class="item-card__card">
+            <p class="item-card__info">Автор: {{ book.author }}</p>
+            <p class="item-card__info">ISBN: {{ book.isbn }}</p>
+        </div>
+    </section>
+  </main>
+</body>
+</html>
