@@ -16,6 +16,9 @@ def index(book_id):
         return render_template("one_book.html", book={})
 
 
+@app.route('/add/')
+def add_book():
+    return render_template("add_book.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
