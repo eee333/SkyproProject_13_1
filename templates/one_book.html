@@ -21,11 +21,15 @@
 </header>
 <main class="container">
     <section class="item-card">
+        {% if book %}
         <h1 class="item-card__title title">{{ book.name }}</h1>
         <div class="item-card__card">
             <p class="item-card__info">Автор: {{ book.author }}</p>
             <p class="item-card__info">ISBN: {{ book.isbn }}</p>
         </div>
+        {% else %}
+        <h1 class="item-card__title title">Ничего не найдено</h1>
+        {% endif %}
     </section>
   </main>
 </body>
