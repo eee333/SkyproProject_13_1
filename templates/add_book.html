@@ -22,10 +22,10 @@
 <main class="container">
     <section class="item-card">
         <h1 class="page-search__title title">Добавить книгу</h1>
-        <form action="/search" class="page-search__form">
+        <form action="/add" class="page-search__form" method="post">
             <div class="page-search__input-wrap">
-                <input name="name" type="text" class="page-search__input input" placeholder="Название">
-                <input name="author" type="text" class="page-search__input input" placeholder="Автор">
+                <input name="name" type="text" class="page-search__input input" placeholder="Название" value="Чтото">
+                <input name="author" type="text" class="page-search__input input" placeholder="Автор" value="Ктото">
             </div>
             <button type="submit" class="page-search__btn">Доюавить</button>
         </form>
