@@ -6,6 +6,14 @@ from flask import Flask, render_template, request, Response
 app = Flask(__name__)
 
 
+def get_next_id(source_list, source_field):
+    next_id = 1
+    for item in source_list:
+        if item[source_field] > next_id:
+            next_id = item[source_field]
+    next_id += 1
+    return next_id
+
 @app.route('/books/<int:book_id>/')
 def index(book_id):
     with open('books.json', encoding="utf-8") as f:
@@ -20,19 +28,24 @@ def index(book_id):
         response = Response(body, content_type='application/json', status=status)
         return response
 
-
-@app.route('/add', methods=['POST'])
+@app.route('/add/', methods=['POST'])
 def add_book():
-    new_book = request.json
-    # new_book['id'] = 2
-    # new_book['isbn'] = "978-5-389-07435-5"
+    if request.get_json():
+        new_book = request.get_json()
+        with open('books.json', encoding="utf-8") as f:
+            books = json.load(f)
+        new_book['id'] = get_next_id(books, "id")
+        new_book['isbn'] = "978-5-389-07435-5"
 
-    return json.dumps(new_book), 201
+        books.append(new_book)
+        with open("books.json", "w", encoding="utf-8") as write_file:
+            json.dump(books, write_file, ensure_ascii=False)
 
+        return "Успешно добавлено", 201
+    return "Ошибка передачи данных в виде JSON", 400
+# Execute in terminal for test POST
+# curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"Fantastic\",\"author\":\"Popp\"}" http://127.0.0.1:5000/add/ --verbos
 
-@app.route('/add/')
-def adding_book():
-    return render_template("add_book.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
