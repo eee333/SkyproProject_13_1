@@ -14,6 +14,21 @@ def get_next_id(source_list, source_field):
     next_id += 1
     return next_id
 
+
+def get_next_isbn(source_list, source_field):
+    # 978-5-389-07435-5
+    next_isbn_int = 1
+    for item in source_list:
+        current_isbn = item[source_field]
+        current_isbn = current_isbn.replace("-", "")
+        if int(current_isbn) > next_isbn_int:
+            next_isbn_int = int(current_isbn)
+    next_isbn_int += 1
+    str_isbn = str(next_isbn_int)
+    next_isbn = ('{}-{}-{}-{}-{}'.format(str_isbn[0:3], str_isbn[3], str_isbn[4:7], str_isbn[7:12], str_isbn[12]))
+    return next_isbn
+
+
 @app.route('/books/<int:book_id>/')
 def index(book_id):
     with open('books.json', encoding="utf-8") as f:
@@ -28,6 +43,7 @@ def index(book_id):
         response = Response(body, content_type='application/json', status=status)
         return response
 
+
 @app.route('/add/', methods=['POST'])
 def add_book():
     if request.get_json():
@@ -35,7 +51,7 @@ def add_book():
         with open('books.json', encoding="utf-8") as f:
             books = json.load(f)
         new_book['id'] = get_next_id(books, "id")
-        new_book['isbn'] = "978-5-389-07435-5"
+        new_book['isbn'] = get_next_isbn(books, "isbn")
 
         books.append(new_book)
         with open("books.json", "w", encoding="utf-8") as write_file:
