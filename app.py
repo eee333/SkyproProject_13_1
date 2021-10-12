@@ -8,10 +8,11 @@ app = Flask(__name__)
 
 def get_next_id(source_list, source_field):
     next_id = 1
-    for item in source_list:
-        if item[source_field] > next_id:
-            next_id = item[source_field]
-    next_id += 1
+    if source_list:
+        for item in source_list:
+            if item[source_field] > next_id:
+                next_id = item[source_field]
+        next_id += 1
     return next_id
 
 
