@@ -83,14 +83,16 @@ def index(book_id):
 def add_book():
     if request.get_json():
         new_book = request.get_json()
-        books = read_json()
-        new_book['id'] = get_next_id(books, "id")
-        new_book['isbn'] = get_next_isbn(books, "isbn")
+        if len(new_book) == 2 and new_book['name'] and new_book['author']:
+            books = read_json()
+            new_book['id'] = get_next_id(books, "id")
+            new_book['isbn'] = get_next_isbn(books, "isbn")
 
-        books.append(new_book)
-        save_json(books) # Save to file
+            books.append(new_book)
+            save_json(books) # Save to file
 
-        return "Успешно добавлено", 201
+            return "Успешно добавлено", 201
+
     return "Ошибка передачи данных в виде JSON", 400
 # Execute in terminal for test POST
 # curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"Fantastic\",\"author\":\"Popp\"}" http://127.0.0.1:5000/add/ --verbos
