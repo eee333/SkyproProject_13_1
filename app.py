@@ -81,6 +81,8 @@ def index(book_id):
 
 @app.route('/add/', methods=['POST'])
 def add_book():
+    body = json.dumps({"error": "Incorrect JSON"})
+    status = '400'
     if request.get_json():
         new_book = request.get_json()
         if len(new_book) == 2 and new_book['name'] and new_book['author']:
@@ -90,10 +92,12 @@ def add_book():
 
             books.append(new_book)
             save_json(books) # Save to file
+            body = json.dumps({"id": new_book['id']})
+            status = '201'
 
-            return "Успешно добавлено", 201
+    response = Response(body, content_type='application/json', status=status)
+    return response
 
-    return "Ошибка передачи данных в виде JSON", 400
 # Execute in terminal for test POST
 # curl -X POST -H "Content-Type: application/json" -d "{\"name\":\"Fantastic\",\"author\":\"Popp\"}" http://127.0.0.1:5000/add/ --verbos
 
