@@ -16,22 +16,27 @@ def get_next_id(source_list, source_field):
     return next_id
 
 
-def get_next_isbn(source_list, source_field):
-    # 978-5-389-07435-4
+def get_next_isbn(source_list, source_field): # Определяем следующий номер isbn
+    """Перебираем все существующие номера.
+    Преобразуем в число и находим максимальный.
+    Прибавляем единицу, учитывая условия.
+    Преобразуем в номер типа 978-5-389-07435-4
+    """
     next_isbn_int = 1
-    for item in source_list:
+    for item in source_list: # Находим максимальный номер isbn
         current_isbn = item[source_field]
-        current_isbn = current_isbn.replace("-", "")
+        current_isbn = current_isbn.replace("-", "") # переводим в число
         if int(current_isbn) > next_isbn_int:
             next_isbn_int = int(current_isbn)
-    next_isbn_int += 1
-    str_isbn = str(next_isbn_int)
+    next_isbn_int += 1 # Следующий номер в виде числа
+    str_isbn = (str(next_isbn_int)).zfill(13) # Заполняем нулями слева, если длина номера меньше 13 символов
     isbn = [0, 0, 0, 0, 0]
-    isbn[0] = int(str_isbn[0:3])
+    isbn[0] = int(str_isbn[0:3]) # Разбиваем по секциям
     isbn[1] = int(str_isbn[3])
     isbn[2] = int(str_isbn[4:7])
     isbn[3] = int(str_isbn[7:12])
     isbn[4] = int(str_isbn[12])
+    # Применяем условия для isbn
     if isbn[4] > 4:
         isbn[4] = 0
         isbn[3] += 1
@@ -44,6 +49,7 @@ def get_next_isbn(source_list, source_field):
     if isbn[1] > 6:
         isbn[1] = 0
         isbn[0] += 1
+    # форматируем по шаблону 978-5-389-07435-4
     next_isbn = ('{:03d}-{}-{:03d}-{:05d}-{}'.format(isbn[0], isbn[1], isbn[2], isbn[3], isbn[4]))
     return next_isbn
 
